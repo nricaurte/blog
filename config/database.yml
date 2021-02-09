@@ -10,8 +10,14 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  username: <%= ENV.fetch('DATA_STORAGE_USERNAME_DEVELOPMENT') %>
+  password: <%= ENV.fetch('DATA_STORAGE_PASSWORD_DEVELOPMENT') %>
+  database: <%= ENV.fetch('BLOG_DEVELOPMENT_DATABASE') %>
+  host: <%= ENV.fetch('DATA_STORAGE_HOST_DEVELOPMENT') %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
