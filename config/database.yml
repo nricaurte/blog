@@ -27,5 +27,11 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  username: <%= ENV.fetch('DATA_STORAGE_USERNAME_PRODUCTION') %>
+  password: <%= ENV.fetch('DATA_STORAGE_PASSWORD_PRODUCTION') %>
+  database: <%= ENV.fetch('BLOG_PRODUCTION_DATABASE') %>
+  host: <%= ENV.fetch('DATA_STORAGE_HOST_PRODUCTION') %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
