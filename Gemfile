@@ -31,6 +31,8 @@ gem 'slim-rails'
 gem 'simple_form'
 gem 'simplecov'
 gem 'annotate'
+gem 'pagy', '~> 3.5'
+gem 'aws-sdk', '~> 3'
 
 
 group :development, :test do

@@ -1,0 +1,32 @@
+p#notice = notice
+
+
+div[class="mt-6"]
+  div[class="max-w-4xl px-10 py-6 bg-white rounded-lg shadow-md"]
+    div[class="flex justify-between items-center"]
+      span[class="font-light text-gray-600"]  =
+      p
+    div[class="mt-2"]
+      p
+        strong Title:
+        = @article.title
+      p
+        strong Content:
+        = @article.content
+      p
+        strong User:
+        = @article.user.email
+      p
+        strong Category:
+        = @article.category.name
+      p
+        strong State:
+        = @article.state
+
+
+      - if @article.user.id == current_user.id
+        => link_to 'Edit', edit_article_path(@article)
+        '|
+        =< link_to 'Back', articles_path
+      -else
+        => link_to 'Back', articles_path

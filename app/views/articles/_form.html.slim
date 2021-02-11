@@ -1,0 +1,37 @@
+= simple_form_for(@article) do |f|
+  br
+  div[class="md:container md:mx-auto"]
+    = f.error_notification
+    = f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present?
+    div[class="px-4 py-5 bg-white sm:p-6"]
+      div[class="grid grid-cols-6 gap-6"]
+        = f.association :user, :as => :hidden, label: "", :input_html => { :value => current_user.id }
+        div[class="col-span-3 sm:col-span-3"]
+          = f.input :title,
+                  required: true,
+                  autofocus: true,
+                  input_html: { class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" }
+        div[class="col-span-3 sm:col-span-3"]
+          = f.input :content,
+                  required: true,
+                  autofocus: true,
+                  input_html: { class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" }
+        div[class="col-span-3 sm:col-span-3"]
+          = f.association :category,
+                  required: true,
+                  input_html: { class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" }
+
+        div[class="col-span-3 sm:col-span-3"]
+          = f.input :state,
+                  :as => :select,
+                  :collection => Article.states.keys.to_a,
+                  required: true,
+                  input_html: {  class: "mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" }
+
+
+
+    div[class="px-4 py-3 bg-gray-50 text-right sm:px-6"]
+      = link_to 'Back', articles_path, class: "mr-10"
+      = f.button :submit, "New Article", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
+

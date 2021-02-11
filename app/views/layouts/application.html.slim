@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title Blog
+    meta name="viewport" content="width=device-width,initial-scale=1"
+    =csrf_meta_tags
+    =csp_meta_tag
+    =stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    =stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    =javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+
+  body[class="bg-gray-200"]
+    p[class="notice"]
+    p[class="alert"]
+    div[class="bg-gray-800 text-white py-3 px-4 text-center fixed left-0 bottom-0 right-0 z-40"]
+      This a Blog Page by khatabwedaa.
+      a[class="underline text-gray-200" href="https://tailwindcomponents.com/component/blog-page"]Component details
+    div[class="bg-gray-100 overflow-x-hidden"]
+
+    nav[class="bg-white px-6 py-4 shadow"]
+      div[class="flex flex-col container mx-auto md:flex-row md:items-center md:justify-between"]
+        div[class="flex justify-between items-center"]
+          div
+            a[href="/" class="text-gray-800 text-xl font-bold md:text-2xl"]Sy Blog
+          div
+            button[type="button" class="block text-gray-800 hover:text-gray-600 focus:text-gray-600 focus:outline-none md:hidden"]
+              svg[viewBox="0 0 24 24" class="h-6 w-6 fill-current"]
+                path[d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"]
+        - if current_user.present?
+          div[class="md:flex flex-col md:flex-row md:-mx-4 hidden"]
+            img[src="#{current_user.avatar.url}"alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"]
+              h1[class="text-gray-700 font-bold hover:underline mr-10 mt-2"] = current_user.email
+            = link_to 'Sign Out', destroy_user_session_path, method: :delete, html:{class:"my-1 text-gray-800 hover:text-blue-500 md:mx-4 md:my-0"}
+    == yield
+
+    br
+    br
+    br

@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Text:
+  = @comment.text
+p
+  strong User:
+  = @comment.user
+p
+  strong Article:
+  = @comment.article
+
+=> link_to 'Edit', edit_comment_path(@comment)
+'|
+=< link_to 'Back', comments_path

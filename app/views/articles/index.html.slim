@@ -1,0 +1,68 @@
+div[class="px-6 py-8"]
+  div[class="flex justify-between container mx-auto"]
+    div[class="w-full lg:w-8/12"]
+      div[class="flex items-center justify-between"]
+        h1[class="text-xl font-bold text-gray-700 md:text-2xl"] Post
+        = link_to "New Post", new_article_path, class:"inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+
+
+      - @articles.each do |article|
+        div[class="mt-6"]
+          div[class="max-w-4xl px-10 py-6 bg-white rounded-lg shadow-md"]
+            div[class="flex justify-between items-center"]
+              span[class="font-light text-gray-600"]  = article.created_at.strftime('%d of %B, %Y')
+              p = article.category.name
+            div[class="mt-2"]
+              a[href="#" class="text-2xl text-gray-700 font-bold hover:underline"]
+              p = article.title
+              p[class="mt-2 text-gray-600"] = article.content
+            div[class="flex justify-between items-center mt-4"]
+              -if current_user.id == article.user.id
+                = link_to 'Edit', edit_article_path(article)
+              -else
+                = link_to "View article", article, class:"text-lg text-gray-700 font-medium hover:underline"
+              div[href="#" class="flex items-center"]
+                -if current_user.avatar.url.nil?
+                  img[src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80" alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"]
+                  h1[class="text-gray-700 font-bold hover:underline"] = article.user.email
+                - else
+                  img[src="#{current_user.avatar.url}"alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"]
+                    h1[class="text-gray-700 font-bold hover:underline"] = article.user.email
+      br
+      == pagy_nav(@pagy)
+
+    div[class="-mx-8 w-4/12 hidden lg:block"]
+      div[class="px-8"]
+        h1[class="mb-4 text-xl font-bold text-gray-700"]Authors
+        div[class="flex flex-col bg-white max-w-sm px-6 py-4 mx-auto rounded-lg shadow-md"]
+          ul[class="-mx-4"]
+          - User.select('users.id, users.email, count(articles.id) as count_articles').joins(:articles).group("users.id").order("count(articles.id) DESC").limit(10).each do |autors|
+            li[class="flex items-center mt-6"]
+              -if current_user.avatar.url.nil?
+                img[src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80" alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"]
+              -else
+                img[src="#{current_user.avatar.url}"alt="avatar" class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"]
+
+              a[href="#" class="text-gray-700 font-bold mx-1 hover:underline"]
+                  span[class="text-gray-700 text-sm font-light"]
+                    p = autors.email
+                  span[class="text-gray-700 text-sm font-light"]  Created  #{autors.count_articles} Posts
+
+      div[class="mt-10 px-8"]
+        h1[class="mb-4 text-xl font-bold text-gray-700"]Categories
+        div[class="flex flex-col bg-white px-4 py-6 max-w-sm mx-auto rounded-lg shadow-md"]
+          ul
+          - Category.all.each  do |category|
+            li[class="mt-2"]
+              = link_to category.name, category, class:"text-gray-700 font-bold mx-1 hover:text-gray-600 hover:underline"
+      div[class="mt-10 px-8"]
+        h1[class="mb-4 text-xl font-bold text-gray-700"]Recent Post
+        - if Article.all.count > 0
+        div[class="flex flex-col bg-white px-8 py-6 max-w-sm mx-auto rounded-lg shadow-md"]
+          div[class="flex justify-center items-center"]
+            p = Article.last.category.name
+          div[class="mt-4"]
+            = link_to Article.last.title, Article.last, class:"text-lg text-gray-700 font-medium hover:underline"
+
+
+
